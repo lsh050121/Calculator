@@ -8,35 +8,32 @@ public class Calculator extends JFrame {
 
     public Calculator() {
         setTitle("계산기");
-        setSize(520, 250);
+        setSize(300, 370);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        textField = new JTextField();
+        textField = new JTextField("0");
         textField.setEditable(false);
         add(textField, BorderLayout.NORTH);
 
         panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 5, 3, 3));
+        panel.setLayout(new GridLayout(5, 4, 3, 3));
 
         String[] buttons = {
-                "Backspace", " ", " ", "CE", "C",
-                "7", "8", "9", "/", "sqrt",
-                "4", "5", "6", "x", "%",
-                "1", "2", "3", "-", "1/x",
-                "0", "+/-", ".", "+", "="
+                "C", "x²", "÷", "⌫",
+                "7", "8", "9", "X",
+                "4", "5", "6", "-",
+                "1", "2", "3", "+",
+                " ", "0", ".", "="
         };
 
         for (int i = 0; i < buttons.length; i++) {
 
             String text = buttons[i];
             button = new JButton(text); //
+            button.setBackground(Color.GRAY);
+            button.setForeground(Color.WHITE);
 
-            if (i % 5 < 3) {
-                button.setForeground(Color.BLUE);
-            } else {
-                button.setForeground(Color.RED);
-            }
 
             panel.add(button);
         }
