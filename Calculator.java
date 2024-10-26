@@ -14,9 +14,13 @@ public class Calculator extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        textField = new JTextField(" 0 ");
+        textField = new JTextField();
         textField.setBounds(10, 10, 265, 70);
         textField.setEditable(false);
+        textField.setBorder(BorderFactory.createEmptyBorder());
+        textField.setFont(new Font(" ", Font.BOLD, 30));
+        textField.setBackground(Color.WHITE);
+        textField.setHorizontalAlignment(SwingConstants.RIGHT);
         add(textField);
 
         panel = new JPanel();
