@@ -11,13 +11,15 @@ public class Calculator extends JFrame {
         setSize(300, 370);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
 
-        textField = new JTextField("0");
+        textField = new JTextField(" 0 ");
         textField.setEditable(false);
         add(textField, BorderLayout.NORTH);
 
         panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 4, 3, 3));
+        panel.setLayout(new GridLayout(5, 4, 6, 6));
 
         String[] buttons = {
                 "C", "x²", "÷", "⌫",
@@ -30,9 +32,17 @@ public class Calculator extends JFrame {
         for (int i = 0; i < buttons.length; i++) {
 
             String text = buttons[i];
-            button = new JButton(text); //
-            button.setBackground(Color.GRAY);
-            button.setForeground(Color.WHITE);
+            button = new JButton(text);
+            if (i < 4 || i % 4 == 3){
+                button.setBackground(Color.WHITE);
+                button.setForeground(Color.BLACK);
+            }
+            else{
+                button.setBackground(Color.GRAY);
+                button.setForeground(Color.WHITE);
+            }
+            button.setFont(new Font(" ", Font.BOLD, 22));
+            button.setBorderPainted(false);
 
 
             panel.add(button);
