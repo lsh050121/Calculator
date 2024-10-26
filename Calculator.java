@@ -9,17 +9,19 @@ public class Calculator extends JFrame {
     public Calculator() {
         setTitle("계산기");
         setSize(300, 370);
-        setLayout(new BorderLayout());
+        setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
         textField = new JTextField(" 0 ");
+        textField.setBounds(10, 10, 265, 70);
         textField.setEditable(false);
-        add(textField, BorderLayout.NORTH);
+        add(textField);
 
         panel = new JPanel();
         panel.setLayout(new GridLayout(5, 4, 6, 6));
+        panel.setBounds(10, 90, 265, 230);
 
         String[] buttons = {
                 "C", "x²", "÷", "⌫",
@@ -41,14 +43,14 @@ public class Calculator extends JFrame {
                 button.setBackground(Color.GRAY);
                 button.setForeground(Color.WHITE);
             }
-            button.setFont(new Font(" ", Font.BOLD, 22));
+            button.setFont(new Font(" ", Font.BOLD, 20));
             button.setBorderPainted(false);
 
 
             panel.add(button);
         }
 
-        add(panel, BorderLayout.CENTER);
+        add(panel);
 
         setVisible(true);
     }
