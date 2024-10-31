@@ -96,7 +96,15 @@ public class Calculator extends JFrame {
             }
             else if (buttonText.equals("=")) {
                 if (!currentText.isEmpty() && !operator.isEmpty()) {
-                    String[] parts = currentText.split(operator);
+                    String realOperator;
+                    if (operator.equals("+")){
+                        realOperator = "\\+";
+                    }
+                    else {
+                        realOperator = operator;
+                    }
+
+                    String[] parts = currentText.split(realOperator);
 
                     double secondNumber = Double.parseDouble(parts[1]);
                     double result = 0;
