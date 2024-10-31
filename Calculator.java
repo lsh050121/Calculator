@@ -86,16 +86,19 @@ public class Calculator extends JFrame {
                     textField.setText(currentText);
                 }
             }
-            else if (buttonText.equals("+") || buttonText.equals("-") || buttonText.equals("X") || buttonText.equals("÷"))  {
-                if (!currentText.isEmpty()){
+            else if (buttonText.equals("+") || buttonText.equals("-") || buttonText.equals("X") || buttonText.equals("÷")) {
+                if (!currentText.isEmpty()) {
                     firstNumber = Double.parseDouble(currentText);
                     operator = buttonText;
-                    currentText = "";
+                    currentText += operator;
+                    textField.setText(currentText);
                 }
             }
             else if (buttonText.equals("=")) {
                 if (!currentText.isEmpty() && !operator.isEmpty()) {
-                    double secondNumber = Double.parseDouble(currentText);
+                    String[] parts = currentText.split(operator);
+
+                    double secondNumber = Double.parseDouble(parts[1]);
                     double result = 0;
 
                     if (operator.equals("+")) {
@@ -109,9 +112,10 @@ public class Calculator extends JFrame {
                     }
                     else if (operator.equals("÷")) {
                         if (secondNumber != 0) {
-                            result = firstNumber / secondNumber;
+                            String results = String.format("%.6f", firstNumber / secondNumber);
+                            result = Double.parseDouble(results);
                         } else {
-                            textField.setText("Error");
+                            textField.setText("0으로 나눌수 없음");
                             return;
                         }
                     }
