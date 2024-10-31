@@ -7,7 +7,7 @@ public class Calculator extends JFrame {
     JTextField textField;
     JPanel panel;
     JButton button;
-    String currentText;
+    String currentText = " ";
     double firstNumber = 0;
     String operator = "";
 
@@ -72,6 +72,54 @@ public class Calculator extends JFrame {
                 firstNumber = 0;
                 operator = "";
                 textField.setText("");
+            }
+            else if (buttonText.equals("x²")){
+                if(!currentText.isEmpty()){
+                    double num = Double.parseDouble(currentText);
+                    currentText = String.valueOf(num * num);
+                    textField.setText(currentText);
+                }
+            }
+            else if (buttonText.equals("⌫")){
+                if(!currentText.isEmpty()){
+                    currentText = currentText.substring(0, currentText.length() - 1);
+                    textField.setText(currentText);
+                }
+            }
+            else if (buttonText.equals("+") || buttonText.equals("-") || buttonText.equals("X") || buttonText.equals("÷"))  {
+                if (!currentText.isEmpty()){
+                    firstNumber = Double.parseDouble(currentText);
+                    operator = buttonText;
+                    currentText = "";
+                }
+            }
+            else if (buttonText.equals("=")) {
+                if (!currentText.isEmpty() && !operator.isEmpty()) {
+                    double secondNumber = Double.parseDouble(currentText);
+                    double result = 0;
+
+                    if (operator.equals("+")) {
+                        result = firstNumber + secondNumber;
+                    }
+                    else if (operator.equals("-")) {
+                        result = firstNumber - secondNumber;
+                    }
+                    else if (operator.equals("X")) {
+                        result = firstNumber * secondNumber;
+                    }
+                    else if (operator.equals("÷")) {
+                        if (secondNumber != 0) {
+                            result = firstNumber / secondNumber;
+                        } else {
+                            textField.setText("Error");
+                            return;
+                        }
+                    }
+
+                    currentText = String.valueOf(result);
+                    textField.setText(currentText);
+                    operator = "";
+                }
             }
             else {
                 if (!buttonText.equals(" ")){
