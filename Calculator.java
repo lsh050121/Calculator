@@ -1,10 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Calculator extends JFrame {
     JTextField textField;
     JPanel panel;
     JButton button;
+    String currentText;
+    double firstNumber = 0;
+    String operator = "";
 
     public Calculator() {
         setTitle("계산기");
@@ -50,13 +55,31 @@ public class Calculator extends JFrame {
             button.setFont(new Font(" ", Font.BOLD, 20));
             button.setBorderPainted(false);
 
-
+            button.addActionListener(new ButtonListener());
             panel.add(button);
         }
 
         add(panel);
 
         setVisible(true);
+    }
+
+    class ButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String buttonText = ((JButton) e.getSource()).getText();
+            if (buttonText.equals("C")){
+                currentText = " ";
+                firstNumber = 0;
+                operator = "";
+                textField.setText("");
+            }
+            else {
+                if (!buttonText.equals(" ")){
+                    currentText = currentText + buttonText;
+                    textField.setText(currentText);
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
