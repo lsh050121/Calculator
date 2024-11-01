@@ -2,12 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Calculator extends JFrame {
     JTextField textField;
     JPanel panel;
     JButton button;
-    String currentText = " ";
+    String currentText = "";
     double firstNumber = 0;
     String operator = "";
 
@@ -67,14 +69,14 @@ public class Calculator extends JFrame {
     class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String buttonText = ((JButton) e.getSource()).getText();
-            if (buttonText.equals("C")){
-                currentText = " ";
+            if (buttonText.equals("C")) {
+                currentText = "";
                 firstNumber = 0;
                 operator = "";
                 textField.setText("");
             }
-            else if (buttonText.equals("x²")){
-                if(!currentText.isEmpty()){
+            else if (buttonText.equals("x²")) {
+                if (!currentText.isEmpty()) {
                     double num = Double.parseDouble(currentText);
                     currentText = String.valueOf(num * num);
                     textField.setText(currentText);
@@ -86,60 +88,65 @@ public class Calculator extends JFrame {
                     textField.setText(currentText);
                 }
             }
-            else if (buttonText.equals("+") || buttonText.equals("-") || buttonText.equals("X") || buttonText.equals("÷")) {
-                if (!currentText.isEmpty()) {
-                    firstNumber = Double.parseDouble(currentText);
-                    operator = buttonText;
-                    currentText += operator;
-                    textField.setText(currentText);
-                }
-            }
             else if (buttonText.equals("=")) {
-                if (!currentText.isEmpty() && !operator.isEmpty()) {
-                    String realOperator;
-                    if (operator.equals("+")){
-                        realOperator = "\\+";
+                if (!currentText.isEmpty()) {
+                    try {
+                        double result = calculate(currentText);
+                        currentText = String.valueOf(result);
+                        textField.setText(currentText);
+                    } catch (Exception ex) {
+                        textField.setText("Error");
                     }
-                    else {
-                        realOperator = operator;
-                    }
-
-                    String[] parts = currentText.split(realOperator);
-
-                    double secondNumber = Double.parseDouble(parts[1]);
-                    double result = 0;
-
-                    if (operator.equals("+")) {
-                        result = firstNumber + secondNumber;
-                    }
-                    else if (operator.equals("-")) {
-                        result = firstNumber - secondNumber;
-                    }
-                    else if (operator.equals("X")) {
-                        result = firstNumber * secondNumber;
-                    }
-                    else if (operator.equals("÷")) {
-                        if (secondNumber != 0) {
-                            String results = String.format("%.6f", firstNumber / secondNumber);
-                            result = Double.parseDouble(results);
-                        } else {
-                            textField.setText("0으로 나눌수 없음");
-                            return;
-                        }
-                    }
-
-                    currentText = String.valueOf(result);
-                    textField.setText(currentText);
-                    operator = "";
                 }
             }
             else {
-                if (!buttonText.equals(" ")){
+                if (!buttonText.equals(" ")) {
                     currentText = currentText + buttonText;
                     textField.setText(currentText);
                 }
             }
         }
+    }
+
+    private double calculate(String input) {
+        List<Double> numbers = new ArrayList<>();
+        List<Character> operations = new ArrayList<>();
+        StringBuilder numberBuffer = new StringBuilder();
+
+        for (char ch : input.toCharArray()) {
+            if (Character.isDigit(ch) || ch == '.') {
+                numberBuffer.append(ch);
+            } else {
+                numbers.add(Double.parseDouble(numberBuffer.toString()));
+                numberBuffer = new StringBuilder();
+                operations.add(ch);
+            }
+        }
+        numbers.add(Double.parseDouble(numberBuffer.toString()));
+
+        for (int i = 0; i < operations.size(); i++) {
+            char op = operations.get(i);
+            if (op == 'X' || op == '÷') {
+                double result = (op == 'X') ? numbers.get(i) * numbers.get(i + 1)
+                        : numbers.get(i) / numbers.get(i + 1);
+                numbers.set(i, result);
+                numbers.remove(i + 1);
+                operations.remove(i);
+                i--;
+            }
+        }
+
+        double result = numbers.get(0);
+        for (int i = 0; i < operations.size(); i++) {
+            char op = operations.get(i);
+            if (op == '+') {
+                result += numbers.get(i + 1);
+            } else if (op == '-') {
+                result -= numbers.get(i + 1);
+            }
+        }
+
+        return result;
     }
 
     public static void main(String[] args) {
