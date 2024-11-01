@@ -39,7 +39,7 @@ public class Calculator extends JFrame {
                 "7", "8", "9", "X",
                 "4", "5", "6", "-",
                 "1", "2", "3", "+",
-                " ", "0", ".", "="
+                "+/-", "0", ".", "="
         };
 
         for (int i = 0; i < buttons.length; i++) {
@@ -99,6 +99,14 @@ public class Calculator extends JFrame {
                     }
                 }
             }
+            else if (buttonText.equals("+/-")) {
+                if (!currentText.isEmpty()) {
+                    double num = Double.parseDouble(currentText);
+                    num = -num;
+                    currentText = String.valueOf(num);
+                    textField.setText(currentText);
+                }
+            }
             else {
                 if (!buttonText.equals(" ")) {
                     currentText = currentText + buttonText;
@@ -113,12 +121,18 @@ public class Calculator extends JFrame {
         List<Character> operations = new ArrayList<>();
         StringBuilder numberBuffer = new StringBuilder();
 
-        for (char ch : input.toCharArray()) {
-            if (Character.isDigit(ch) || ch == '.') {
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+
+            if (ch == '-' && (i == 0 || !Character.isDigit(input.charAt(i - 1)))) {
+                numberBuffer.append(ch);
+            } else if (Character.isDigit(ch) || ch == '.') {
                 numberBuffer.append(ch);
             } else {
-                numbers.add(Double.parseDouble(numberBuffer.toString()));
-                numberBuffer = new StringBuilder();
+                if (numberBuffer.length() > 0) {
+                    numbers.add(Double.parseDouble(numberBuffer.toString()));
+                    numberBuffer = new StringBuilder();
+                }
                 operations.add(ch);
             }
         }
